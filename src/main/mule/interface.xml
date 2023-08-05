@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="GET:\greetings" doc:id="036b35ec-20f4-4ee0-b853-1005e4e6ef06" >
+		<http:listener doc:name="Listener" doc:id="dd104185-1c71-447b-8cc7-e6777a85e3da" config-ref="HTTP_Listener_config" path="/greetings"/>
+		<set-variable value="#[attributes.queryParams.&quot;name&quot; default &quot;Max's friend&quot;]" doc:name="Set Variable" doc:id="d30a20cc-6267-4503-9844-d941b2cf3af3" variableName="guestName"/>
+		<ee:transform doc:name="Set response payload" doc:id="9b451969-65e9-466b-a255-4061202c5be0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Hello "++ vars.guestName ++ "! GREETINGS from Oaxaca, Mexico."
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Log payload" doc:id="9c86a772-d1bd-42a9-90d6-437b9f8faf79" message='#["\n"]#[payload]'/>
+	</flow>
+</mule>
