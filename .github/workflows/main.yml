@@ -6,6 +6,7 @@ on:
   pull_request:
     branches: [ stg,prod ]
   workflow_dispatch:
+  workflow_call:
     
 jobs:
   build:
